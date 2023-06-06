@@ -1,10 +1,10 @@
 import { FastifyInstance } from 'fastify'
-import { addPetRoute } from './pets/add'
-import { petDetailsRoute } from './pets/details'
-import { searchPetRoute } from './pets/search'
-import { signInRoute } from './register/session'
-import { createUserRoute } from './register/create-user'
 import { verifyJwt } from '../middlewares/verify-jwt'
+import { createUserRoute } from '../controllers/register/create-user'
+import { signInRoute } from '../controllers/register/session'
+import { searchPetRoute } from '../controllers/pets/search'
+import { petDetailsRoute } from '../controllers/pets/details'
+import { addPetRoute } from '../controllers/pets/add'
 
 export async function userRoutes(app: FastifyInstance) {
   app.post('/', createUserRoute)
