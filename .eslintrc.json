@@ -1,0 +1,13 @@
+{
+    "extends": [
+        "@rocketseat/eslint-config/node"
+    ],
+    "ignorePatterns": [
+        "*.js"
+    ],
+    "rules": {
+        "camelcase":"off",
+        "no-useless-constructor":"off",
+        "eol-last":"off"
+    }
+}
