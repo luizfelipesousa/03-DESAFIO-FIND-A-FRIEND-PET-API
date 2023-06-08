@@ -1,21 +1,46 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
+import { createUserServiceFactory } from '../../../services/factory/make-user-service-factory'
 
 export async function signInRoute(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const createUserSchema = z.object({
+  const createCredentialsSchema = z.object({
     email: z.string().email(),
-    password: z.string(),
+    password: z.string().min(6),
   })
 
-  const user = createUserSchema.parse(request.body)
+  const { email, password } = createCredentialsSchema.parse(request.body)
 
-  const token = await reply.jwtSign({ user })
+  const userService = createUserServiceFactory()
 
-  reply.setCookie('sessionId', token, {
+  const { id, role } = await userService.createSession({
+    email,
+    password,
+  })
+
+  const token = await reply.jwtSign(
+    { role },
+    {
+      sign: {
+        sub: id,
+      },
+    },
+  )
+
+  const refreshToken = await reply.jwtSign(
+    { role },
+    {
+      sign: { sub: id },
+    },
+  )
+
+  reply.setCookie('refreshToken', refreshToken, {
     path: '/',
+    secure: true,
+    sameSite: true,
+    httpOnly: true,
   })
 
   return reply.status(200).send({ token })

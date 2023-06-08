@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
+import { createPetServiceFactory } from '../../../services/factory/make-pet-service-factory'
 
 export async function petDetailsRoute(
   request: FastifyRequest,
@@ -11,5 +12,8 @@ export async function petDetailsRoute(
 
   const { id } = petIdSchema.parse(request.params)
 
-  return reply.status(200).send({ id })
+  const petService = createPetServiceFactory()
+  const petDetail = await petService.getPetById(id)
+
+  return reply.status(200).send({ petDetail })
 }

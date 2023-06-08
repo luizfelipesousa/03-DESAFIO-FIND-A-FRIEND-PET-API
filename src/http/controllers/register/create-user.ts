@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { phoneRegex } from '../../../utils/phone-number-regex'
+import { createUserServiceFactory } from '../../../services/factory/make-user-service-factory'
 
 export async function createUserRoute(
   request: FastifyRequest,
@@ -8,18 +9,22 @@ export async function createUserRoute(
 ) {
   const createUserSchema = z.object({
     name: z.string(),
-    whatsapp: z.string().regex(phoneRegex, 'Invalid Number'),
+    contact: z.string().regex(phoneRegex, 'Invalid Number'),
     country: z.string().max(255),
     state: z.string().max(255),
     city: z.string().max(255),
     address: z.string().max(255),
     zipcode: z.coerce.number(),
-    type: z.enum(['user', 'org']),
+    role: z.enum(['MEMBER', 'ORG']).default('MEMBER'),
     email: z.string().email(),
-    password: z.string(),
+    password: z.string().min(6),
   })
 
   const user = createUserSchema.parse(request.body)
 
-  return reply.status(201).send(user)
+  const userService = createUserServiceFactory()
+
+  const userCreated = await userService.createUser(user)
+
+  return reply.status(201).send({ id: userCreated.id })
 }
