@@ -6,10 +6,12 @@ import { signInRoute } from './register/session'
 import { createUserRoute } from './register/create-user'
 import { adoptPetRoute } from './pets/adopt-pet'
 import { verifyJwt } from '../middlewares/verify-jwt'
+import { refreshTokenRoute } from './register/refresh-token'
 
 export async function userRoutes(app: FastifyInstance) {
   app.post('/', createUserRoute)
   app.post('/login', signInRoute)
+  app.patch('/refresh/token', refreshTokenRoute)
 }
 
 export async function petRoutes(app: FastifyInstance) {

@@ -7,7 +7,7 @@ const envPropSchema = z.object({
   PORT: z.coerce.number().default(3333),
 })
 
-const _env = envPropSchema.safeParse(envPropSchema)
+const _env = envPropSchema.safeParse(process.env)
 
 if (_env.success === false) {
   console.error('❌ Invalid environment variables', _env.error.format())

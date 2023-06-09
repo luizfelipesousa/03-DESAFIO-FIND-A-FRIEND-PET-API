@@ -32,16 +32,20 @@ export async function signInRoute(
   const refreshToken = await reply.jwtSign(
     { role },
     {
-      sign: { sub: id },
+      sign: {
+        sub: id,
+        expiresIn: '7d',
+      },
     },
   )
 
-  reply.setCookie('refreshToken', refreshToken, {
-    path: '/',
-    secure: true,
-    sameSite: true,
-    httpOnly: true,
-  })
-
-  return reply.status(200).send({ token })
+  return reply
+    .setCookie('refreshToken', refreshToken, {
+      path: '/',
+      secure: true,
+      sameSite: true,
+      httpOnly: true,
+    })
+    .status(200)
+    .send({ token })
 }

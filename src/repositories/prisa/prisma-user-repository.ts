@@ -39,6 +39,11 @@ export class PrismaUserRepository implements UserRepository {
               contains: location,
             },
           },
+          {
+            zipcode: {
+              equals: location,
+            },
+          },
         ],
       },
     })
