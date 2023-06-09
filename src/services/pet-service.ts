@@ -2,8 +2,8 @@ import { User } from '@prisma/client'
 import { PetRepository } from '../repositories/pet-repository'
 import { UserRepository } from '../repositories/user-repository'
 import { generateWppNumber } from '../utils/generate-whatsapp-link'
-import { ResourceNotFoundException } from '../errors/resource-not-found-exception'
-import { AccessNotGrantedException } from '../errors/access-not-granted-exception'
+import { ResourceNotFoundException } from './errors/resource-not-found-exception'
+import { AccessNotGrantedException } from './errors/access-not-granted-exception'
 
 interface PetInfo {
   name: string
@@ -27,8 +27,6 @@ export class PetService {
     private petRepo: PetRepository,
     private userRepo: UserRepository,
   ) {}
-
-  async execute() {}
 
   async createPet(pet: PetInfo) {
     const isAnOrg = await this.userRepo.findUserByIdAndRole(pet.orgId, 'ORG')

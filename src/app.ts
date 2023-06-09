@@ -3,9 +3,9 @@ import { ZodError } from 'zod'
 import fastifyJwt from '@fastify/jwt'
 import fastifyCookie from '@fastify/cookie'
 import { petRoutes, userRoutes } from './http/controllers/routes'
-import { ResourceNotFoundException } from './errors/resource-not-found-exception'
-import { InvalidCredentialsException } from './errors/invalid-credentials-exception'
-import { AccessNotGrantedException } from './errors/access-not-granted-exception'
+import { ResourceNotFoundException } from './services/errors/resource-not-found-exception'
+import { InvalidCredentialsException } from './services/errors/invalid-credentials-exception'
+import { AccessNotGrantedException } from './services/errors/access-not-granted-exception'
 import { env } from './env'
 
 export const app = fastify()
@@ -16,7 +16,7 @@ app.register(fastifyJwt, {
   sign: { expiresIn: '20m' },
 })
 app.register(fastifyCookie)
-app.register(userRoutes, { prefix: 'user' })
+app.register(userRoutes, { prefix: 'users' })
 app.register(petRoutes, { prefix: 'pets' })
 
 app.setErrorHandler((error, req, reply) => {

@@ -14,7 +14,7 @@ export async function addPetRoute(req: FastifyRequest, reply: FastifyReply) {
   const petService = createPetServiceFactory()
   const data = req.user
 
-  const petId = await petService.createPet({ ...petInfo, orgId: data.id })
+  const petId = await petService.createPet({ ...petInfo, orgId: data.sub })
 
   return reply.status(201).send({ petId })
 }

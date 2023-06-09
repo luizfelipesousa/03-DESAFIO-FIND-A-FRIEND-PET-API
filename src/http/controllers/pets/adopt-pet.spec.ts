@@ -1,0 +1,47 @@
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { app } from '../../../app'
+import request from 'supertest'
+import {
+  generateUser,
+  generateUserToken,
+} from '../../../utils/test/create-user'
+
+describe('Adopt a pet controller', () => {
+  beforeAll(async () => {
+    await app.ready()
+  })
+
+  afterAll(async () => {
+    await app.close()
+  })
+
+  it('should be possible to a org add a pet for adoption', async () => {
+    await generateUser(app.server, 'ORG', 'adopt')
+    const { token } = await generateUserToken(app.server, 'ORG', 'adopt')
+
+    const petResponse = await request(app.server)
+      .post('/pets')
+      .set('Authorization', `bearer ${token} `)
+      .send({
+        name: 'Dranzer',
+        species: 'bird',
+        gender: 'male',
+        color: 'red',
+      })
+    const { petId } = petResponse.body
+
+    const response = await request(app.server)
+      .get(`/pets/${petId}/adopt`)
+      .send()
+
+    const { petDetail } = response.body
+    expect(response.statusCode).toEqual(200)
+    expect(petDetail).toEqual(
+      expect.objectContaining({
+        orgInfo: expect.objectContaining({
+          contact: expect.stringContaining('https://wa.me/'),
+        }),
+      }),
+    )
+  })
+})

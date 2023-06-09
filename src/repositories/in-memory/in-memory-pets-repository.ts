@@ -3,9 +3,8 @@ import { PetRepository } from '../pet-repository'
 import { SearchCriteria } from '../../services/pet-service'
 import { randomUUID } from 'node:crypto'
 
-const pets: Pet[] = []
-
 export class InMemoryPetsRepository implements PetRepository {
+  pets: Pet[] = []
   async createPet(data: Prisma.PetUncheckedCreateInput): Promise<Pet> {
     const pet = {
       id: randomUUID(),
@@ -15,18 +14,18 @@ export class InMemoryPetsRepository implements PetRepository {
       adopted_by: null,
     }
 
-    pets.push(pet)
+    this.pets.push(pet)
 
     return pet
   }
 
   async findById(id: string): Promise<Pet | null> {
-    const pet = pets.find((p) => p.id === id)
+    const pet = this.pets.find((p) => p.id === id)
     return pet ?? null
   }
 
   async findPetInfoById(id: string): Promise<Pet | null> {
-    const petInfo = pets.find((p) => p.id === id && p.adopted_by === null)
+    const petInfo = this.pets.find((p) => p.id === id && p.adopted_by === null)
     return petInfo ?? null
   }
 
@@ -37,7 +36,7 @@ export class InMemoryPetsRepository implements PetRepository {
     q,
     orgs,
   }: SearchCriteria): Promise<Pet[]> {
-    const listOfPets = pets.filter(
+    const listOfPets = this.pets.filter(
       (p) =>
         (p.color === color ||
           p.gender === gender ||

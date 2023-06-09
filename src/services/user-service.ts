@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client'
 import bcryptjs from 'bcryptjs'
 import { UserRepository } from '../repositories/user-repository'
-import { ResourceNotFoundException } from '../errors/resource-not-found-exception'
-import { InvalidCredentialsException } from '../errors/invalid-credentials-exception'
+import { ResourceNotFoundException } from './errors/resource-not-found-exception'
+import { InvalidCredentialsException } from './errors/invalid-credentials-exception'
 
 export class UserService {
   constructor(private repository: UserRepository) {}
