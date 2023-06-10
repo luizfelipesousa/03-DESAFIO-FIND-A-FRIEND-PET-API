@@ -3,5 +3,6 @@ import { CreateUserSessionService } from '../create-user-session-service'
 
 export function createUserSessionService() {
   const repository = new PrismaUserRepository()
-  return new CreateUserSessionService(repository)
+  const userService = new CreateUserSessionService(repository)
+  return userService
 }

@@ -5,5 +5,6 @@ import { CreatePetService } from '../create-pet-service'
 export function createPetService() {
   const petRepo = new PrismaPetsRepository()
   const userRepo = new PrismaUserRepository()
-  return new CreatePetService(petRepo, userRepo)
+  const petService = new CreatePetService(petRepo, userRepo)
+  return petService
 }
