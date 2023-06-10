@@ -5,5 +5,6 @@ import { GetPetAdoptionInfoService } from '../get-pet-adoption-info-service'
 export function createGetPetAdoptionInfoServiceFactory() {
   const petRepo = new PrismaPetsRepository()
   const userRepo = new PrismaUserRepository()
-  return new GetPetAdoptionInfoService(petRepo, userRepo)
+  const petService = new GetPetAdoptionInfoService(petRepo, userRepo)
+  return petService
 }

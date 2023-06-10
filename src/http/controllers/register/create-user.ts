@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { phoneRegex } from '../../../utils/phone-number-regex'
-import { createUserSessionService } from '../../../services/factories/make-create-user-session-service'
+import { createUserService } from '../../../services/factories/make-create-user-service'
 
 export async function createUserRoute(
   request: FastifyRequest,
@@ -22,7 +22,7 @@ export async function createUserRoute(
 
   const user = createUserSchema.parse(request.body)
 
-  const userService = createUserSessionService()
+  const userService = createUserService()
 
   const userCreated = await userService.execute(user)
 

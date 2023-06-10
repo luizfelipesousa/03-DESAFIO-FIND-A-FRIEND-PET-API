@@ -5,5 +5,6 @@ import { SearchPetService } from '../search-pet-service'
 export function createSearchPetService() {
   const petRepo = new PrismaPetsRepository()
   const userRepo = new PrismaUserRepository()
-  return new SearchPetService(petRepo, userRepo)
+  const petService = new SearchPetService(petRepo, userRepo)
+  return petService
 }

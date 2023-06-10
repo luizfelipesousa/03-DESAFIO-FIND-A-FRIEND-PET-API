@@ -5,5 +5,6 @@ import { GetPetByIdService } from '../get-pet-by-id-service'
 export function createGetPetByIdService() {
   const petRepo = new PrismaPetsRepository()
   const userRepo = new PrismaUserRepository()
-  return new GetPetByIdService(petRepo, userRepo)
+  const petService = new GetPetByIdService(petRepo, userRepo)
+  return petService
 }

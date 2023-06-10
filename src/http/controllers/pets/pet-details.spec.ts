@@ -1,10 +1,8 @@
+import request from 'supertest'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { app } from '../../../app'
-import request from 'supertest'
-import {
-  generateUser,
-  generateUserToken,
-} from '../../../utils/test/create-user'
+import { generateUser } from '../../../utils/test/create-user-for-e2e-test'
+import { generateUserToken } from '../../../utils/test/get-toke-for-e2e-test'
 
 describe('Pet details controller', () => {
   beforeAll(async () => {
