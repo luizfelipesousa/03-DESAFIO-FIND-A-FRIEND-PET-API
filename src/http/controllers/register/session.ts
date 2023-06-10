@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { createUserServiceFactory } from '../../../services/factory/make-user-service-factory'
+import { createUserSessionService } from '../../../services/factories/make-create-user-session-service'
 
 export async function signInRoute(
   request: FastifyRequest,
@@ -13,9 +13,9 @@ export async function signInRoute(
 
   const { email, password } = createCredentialsSchema.parse(request.body)
 
-  const userService = createUserServiceFactory()
+  const userService = createUserSessionService()
 
-  const { id, role } = await userService.createSession({
+  const { id, role } = await userService.execute({
     email,
     password,
   })

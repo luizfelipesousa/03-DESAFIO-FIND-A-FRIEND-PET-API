@@ -1,12 +1,14 @@
 import { User } from '@prisma/client'
 import { UserRepository } from '../user-repository'
 import { randomUUID } from 'node:crypto'
+import bcryptjs from 'bcryptjs'
 
 export class InMemoryUserRepository implements UserRepository {
   users: User[] = []
   async createUser(user: User): Promise<User> {
     const id = randomUUID()
-    this.users.push({ ...user, id })
+    const password = await bcryptjs.hash(user.password, 6)
+    this.users.push({ ...user, id, password })
     return { ...user, id }
   }
 
@@ -32,7 +34,7 @@ export class InMemoryUserRepository implements UserRepository {
     id: string,
     role: 'ORG' | 'MEMBER',
   ): Promise<User | null> {
-    const user = this.users.find((u) => u.id === id && u.role === 'ORG')
+    const user = this.users.find((u) => u.id === id && u.role === role)
     return user ?? null
   }
 }

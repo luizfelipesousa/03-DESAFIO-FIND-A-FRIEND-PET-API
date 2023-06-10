@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { createPetServiceFactory } from '../../../services/factory/make-pet-service-factory'
+import { createSearchPetService } from '../../../services/factories/make-search-pet-service'
 
 export async function searchPetRoute(req: FastifyRequest, reply: FastifyReply) {
   const searchSchema = z.object({
@@ -13,8 +13,8 @@ export async function searchPetRoute(req: FastifyRequest, reply: FastifyReply) {
 
   const { location, q, species, color, gender } = searchSchema.parse(req.query)
 
-  const petService = createPetServiceFactory()
-  const pets = await petService.searchPet({
+  const petService = createSearchPetService()
+  const pets = await petService.execute({
     location,
     q,
     species,
